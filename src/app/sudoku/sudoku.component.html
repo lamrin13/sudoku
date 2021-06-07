@@ -1,0 +1,32 @@
+<div class="container">
+  <div style="width: 50%; float: left">
+    <mat-grid-list [cols]="cols" rowHeight="1:1" [gutterSize]="'2px'">
+      <div *ngFor="let item of [].constructor(cols); let i = index">
+        <div *ngFor="let item of [].constructor(rows); let j = index">
+          <mat-grid-tile
+            [@colorState]="colorState[i][j]"
+            (click)="selectCell(i, j)"
+          >
+            <p *ngIf="grid[i][j] != 0">{{ grid[i][j] }}</p>
+          </mat-grid-tile>
+        </div>
+      </div>
+    </mat-grid-list>
+  </div>
+  <div style="width: 49%; float: left; margin-left: 1%">
+    <div class="buttons" *ngFor="let button of buttons; let i = index">
+      <button mat-fab color="primary" id="number" (click)="fillValue(button)">
+        {{ button }}
+      </button>
+    </div>
+    <button
+      mat-fab
+      color="primary"
+      id="number"
+      style="margin-top: 5px"
+      (click)="eraseValue()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
