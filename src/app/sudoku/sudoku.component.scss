@@ -1,6 +1,6 @@
-mat-grid-tile {
+.grid {
   background: lightblue;
-  font-size: larger;
+  font-size: small;
 }
 
 .container {
@@ -19,4 +19,18 @@ mat-grid-tile {
 
 #number{
     margin-left: 5px;
+}
+
+.button {
+  float: left;
+  background-color: #5963f0;
+  border: none;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 2px 1px;
+  border-radius: 50%;
 }

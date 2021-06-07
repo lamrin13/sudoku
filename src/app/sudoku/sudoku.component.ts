@@ -63,20 +63,26 @@ export class SudokuComponent implements OnInit {
   buttons: number[] =[];
   xSelected: number = -1;
   ySelected: number = -1;
-
+  breakpoint: number = 1;
   ngOnInit(): void {
+    this.breakpoint = (window.innerWidth <= 450) ? 3 : 1;
     this.defaultColor();
     for(let i=0;i<9;i++){
       this.buttons[i] = i+1;
     }
   }
-
+  onResize(event: any) {
+    this.breakpoint = (event.target.innerWidth <= 450) ? 3 : 1;
+  }
   defaultColor(){
     for(let i=0;i<this.rows;i++){
       this.colorState[i]=[];
       for(let j=0;j<this.cols;j++){
         if((i<3 && j<3) || (i>5 && j>5) || (i>5 && j<3) || (i<3 && j>5) || (i>2 && i<6 && j>2 && j<6)){
           this.colorState[i][j]="blue";
+        }
+        else{
+          this.colorState[i][j]="lightblue";
         }
       }
     }
