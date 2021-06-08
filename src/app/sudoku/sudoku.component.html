@@ -1,5 +1,5 @@
 <div class="container">
-  <div style="width: 100%; float: left">
+  <div class="flexBox1">
     <mat-grid-list [cols]="cols" rowHeight="1:1" [gutterSize]="'2px'">
       <div *ngFor="let item of [].constructor(cols); let i = index">
         <div *ngFor="let item of [].constructor(rows); let j = index">
@@ -13,14 +13,16 @@
       </div>
     </mat-grid-list>
   </div>
-  <div style="width: 100%">
-    <div class="buttons" *ngFor="let button of buttons; let i = index">
-      <button class="button" (click)="fillValue(button)">
-        {{ button }}
+  <div class="flexBox1">
+    <div class="button-container">
+      <div class="buttons" *ngFor="let button of buttons; let i = index">
+        <button class="button" (click)="fillValue(button)">
+          {{ button }}
+        </button>
+      </div>
+      <button class="icon button buttons" (click)="eraseValue()">
+        <mat-icon [inline]="true">delete</mat-icon>
       </button>
     </div>
-    <!-- <button class="button" (click)="eraseValue()">
-      <mat-icon>delete</mat-icon>
-    </button> -->
   </div>
 </div>

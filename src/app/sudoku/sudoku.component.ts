@@ -39,7 +39,7 @@ import {
         color: "white"
       })
     ),
-    transition("* => *", animate("300ms steps(3)")),
+    transition("* => *", animate("30ms steps(1)")),
   ]),
 ]
 })
@@ -117,12 +117,13 @@ export class SudokuComponent implements OnInit {
   eraseValue(){
     this.grid[this.xSelected][this.ySelected] = 0;
     this.colorState[this.xSelected][this.ySelected] = "lightblue";
+    this.defaultColor();
   }
 
   validate(){
     let flag = false;
     for(let i=0;i<this.rows;i++){
-      if(this.xSelected!=i && this.grid[i][this.ySelected]==this.grid[this.xSelected][this.ySelected]){
+      if(this.xSelected!=i && this.grid[i][this.ySelected]==this.grid[this.xSelected][this.ySelected] && this.grid[this.xSelected][this.ySelected]!=0){
         this.colorState[i][this.ySelected] = "red";
         flag = true;
       }
@@ -130,7 +131,7 @@ export class SudokuComponent implements OnInit {
         this.colorState[this.xSelected][this.ySelected] = "red";
     }
     for(let i=0;i<this.cols;i++){
-      if(this.ySelected!=i && this.grid[this.xSelected][i]==this.grid[this.xSelected][this.ySelected]){
+      if(this.ySelected!=i && this.grid[this.xSelected][i]==this.grid[this.xSelected][this.ySelected] && this.grid[this.xSelected][this.ySelected]!=0){
         this.colorState[this.xSelected][i] = "red";
         flag = true;
       }
@@ -138,5 +139,6 @@ export class SudokuComponent implements OnInit {
         this.colorState[this.xSelected][this.ySelected] = "red";
     }
   }
+  
   
 }

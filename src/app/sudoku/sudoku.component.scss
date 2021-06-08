@@ -4,33 +4,77 @@
 }
 
 .container {
-  width: 75%;
-  height: 75%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  // background-color: DodgerBlue;
+  // height: 100%;
+  // overflow: hidden;
+  // width: 40%;
+  // height: 40%;
+  // margin-left: auto;
+  // margin-right: auto;
+  // margin-top: auto;
   // margin: 20px 20px 50px 20px;
   // width: 40%;
 }
-
+.flexBox1 {
+  // background-color: #f1f1f1;
+  width: 45%;
+  margin: 15px;
+  // text-align: center;
+  // line-height: 75px;
+  // font-size: 30px;
+}
 .buttons{
     margin-top:5px;
 }
-
+// .icon{
+//   font-size: 12px;
+// }
 #number{
     margin-left: 5px;
 }
 
 .button {
-  float: left;
+  // float: left;
   background-color: #5963f0;
   border: none;
   color: white;
-  padding: 12px;
+  padding: 24px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+  font-size: 24px;
   margin: 2px 1px;
   border-radius: 50%;
+}
+
+@media screen and (max-width:612px) {
+  .button {
+    // float: left;
+    background-color: #5963f0;
+    border: none;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 2px 1px;
+    border-radius: 50%;
+  }
+
+  
+}
+
+.button-container{
+  display: flex;
+  flex-wrap: wrap;
+  // flex-direction: column;
+  // width: 45%;
+}
+
+.button-flex{
+  width: 100%;
+  // margin: 10px;
 }
