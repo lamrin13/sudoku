@@ -13,16 +13,16 @@
       </div>
     </mat-grid-list>
   </div>
-  <div class="flexBox1">
+  <div class="flexBox2">
     <div class="button-container">
       <div class="buttons" *ngFor="let button of buttons; let i = index">
         <button class="button" (click)="fillValue(button)">
           {{ button }}
         </button>
       </div>
-      <button class="icon button buttons" (click)="eraseValue()">
+      <!-- <button class="icon button buttons" (click)="eraseValue()">
         <mat-icon [inline]="true">delete</mat-icon>
-      </button>
+      </button> -->
     </div>
   </div>
 </div>
