@@ -16,7 +16,11 @@
   <div class="flexBox2">
     <div class="button-container">
       <div class="buttons" *ngFor="let button of buttons; let i = index">
-        <button class="button" (click)="fillValue(button)">
+        <button
+          [ngClass]="activeButton[i] ? 'disabled-button' : 'button'"
+          [disabled]="activeButton[i]"
+          (click)="fillValue(button)"
+        >
           {{ button }}
         </button>
       </div>

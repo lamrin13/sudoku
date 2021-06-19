@@ -7,6 +7,7 @@ import {
   transition,
   animate,
 } from "@angular/animations";
+import puzzle from "./puzzles.json"
 
 @Component({
   selector: 'app-sudoku',
@@ -49,11 +50,17 @@ export class SudokuComponent implements OnInit {
     this.cols = 9;
     this.rows = 9;
     this.grid =[];
+    this.currentPuzzle = puzzle[0];
+    for(let i=0;i<10;i++)
+      this.count[i] = 0;
     for(let i=0;i<this.rows;i++){
       this.grid[i] = [];
-      for(let j=0;j<this.cols;j++)
-        this.grid[i][j]=0;
+      for(let j=0;j<this.cols;j++){
+        this.grid[i][j]=this.currentPuzzle[i*9+j];
+        this.count[this.currentPuzzle[i*9+j]]++;
+      }
     }
+    console.log(this.count);
   }
 
   cols: number;
@@ -64,6 +71,9 @@ export class SudokuComponent implements OnInit {
   xSelected: number = -1;
   ySelected: number = -1;
   breakpoint: number = 1;
+  currentPuzzle: number[] = [];
+  activeButton: boolean[] = [];
+  count: number[] = [];
   ngOnInit(): void {
     this.breakpoint = (window.innerWidth <= 450) ? 3 : 1;
     this.defaultColor();
@@ -91,13 +101,14 @@ export class SudokuComponent implements OnInit {
     this.defaultColor();
     this.xSelected=x;
     this.ySelected=y;
-    if(this.grid[x][y]===0){
+    console.log("here",this.grid[x][y])
+    if(this.grid[x][y]==0){
       this.colorState[x][y]="#1a237e"
     }
     else{
       for(let i=0;i<this.rows;i++)
         for(let j=0;j<this.cols;j++){
-          if(this.grid[i][j]===this.grid[x][y])
+          if(this.grid[i][j]==this.grid[x][y])
             this.colorState[i][j]="#1a237e"
         }
     }
@@ -105,9 +116,12 @@ export class SudokuComponent implements OnInit {
   }
 
   fillValue(n: number){
-    console.log(n,this.xSelected,this.ySelected)
+    // console.log(n,this.xSelected,this.ySelected,this.count[n]);
     if(this.xSelected>=0){
       this.grid[this.xSelected][this.ySelected] = n;
+      this.count[n]++;
+      if(this.count[n]==9)
+        this.activeButton[n-1]=true;
       this.defaultColor();
       this.colorState[this.xSelected][this.ySelected]="#1a237e"
       this.selectCell(this.xSelected,this.ySelected)
@@ -137,6 +151,19 @@ export class SudokuComponent implements OnInit {
       }
       if(flag)
         this.colorState[this.xSelected][this.ySelected] = "red";
+    }
+    let x = Math.floor(this.xSelected/3)*3;
+    let y = Math.floor(this.ySelected/3)*3;  
+    for(let i=x;i<x+3;i++){
+        for(let j=y;j<y+3;j++){
+          if(this.xSelected!=i && this.ySelected!=j && this.grid[i][j]==this.grid[this.xSelected][this.ySelected] && this.grid[this.xSelected][this.ySelected]!=0){
+            this.colorState[i][j]="red";
+            flag = true;
+          }
+        }
+        
+        if(flag)
+          this.colorState[this.xSelected][this.ySelected] = "red";
     }
   }
   
