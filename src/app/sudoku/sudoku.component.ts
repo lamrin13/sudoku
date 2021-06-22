@@ -40,6 +40,20 @@ import puzzle from "./puzzles.json"
         color: "white"
       })
     ),
+    state(
+      "lightblue-grey",
+      style({
+        background: "lightblue",
+        color: "grey"
+      })
+    ),
+    state(
+      "blue-grey",
+      style({
+        background: "#c5cae9",
+        color: "grey"
+      })
+    ),
     transition("* => *", animate("30ms steps(1)")),
   ]),
 ]
@@ -55,12 +69,16 @@ export class SudokuComponent implements OnInit {
       this.count[i] = 0;
     for(let i=0;i<this.rows;i++){
       this.grid[i] = [];
+      this.colorState[i] = [];
       for(let j=0;j<this.cols;j++){
         this.grid[i][j]=this.currentPuzzle[i*9+j];
+        if(this.grid[i][j]!=0){
+          this.map.push(i+""+j);
+        }
         this.count[this.currentPuzzle[i*9+j]]++;
       }
     }
-    console.log(this.count);
+    console.log(this.map);
   }
 
   cols: number;
@@ -74,6 +92,7 @@ export class SudokuComponent implements OnInit {
   currentPuzzle: number[] = [];
   activeButton: boolean[] = [];
   count: number[] = [];
+  map: Object[] = [];
   ngOnInit(): void {
     this.breakpoint = (window.innerWidth <= 450) ? 3 : 1;
     this.defaultColor();
@@ -96,12 +115,19 @@ export class SudokuComponent implements OnInit {
         }
       }
     }
+    for(let p in this.map){
+      let x = this.map[p] as number[];
+      let i = x[0], j=x[1];
+      if((i<3 && j<3) || (i>5 && j>5) || (i>5 && j<3) || (i<3 && j>5) || (i>2 && i<6 && j>2 && j<6))
+        this.colorState[i][j] = "blue-grey"; 
+      else
+      this.colorState[i][j] = "lightblue-grey";
+    }
   }
   selectCell(x: number,y: number){
     this.defaultColor();
     this.xSelected=x;
     this.ySelected=y;
-    console.log("here",this.grid[x][y])
     if(this.grid[x][y]==0){
       this.colorState[x][y]="#1a237e"
     }
@@ -116,10 +142,12 @@ export class SudokuComponent implements OnInit {
   }
 
   fillValue(n: number){
-    // console.log(n,this.xSelected,this.ySelected,this.count[n]);
-    if(this.xSelected>=0){
+    let tmp = this.xSelected+""+this.ySelected;
+    if(this.xSelected>=0 && !this.map.includes(tmp)){
+      this.count[this.grid[this.xSelected][this.ySelected]]--;
       this.grid[this.xSelected][this.ySelected] = n;
       this.count[n]++;
+      console.log(this.count)
       if(this.count[n]==9)
         this.activeButton[n-1]=true;
       this.defaultColor();
