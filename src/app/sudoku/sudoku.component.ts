@@ -8,6 +8,8 @@ import {
   animate,
 } from "@angular/animations";
 import puzzle from "./puzzles.json"
+import * as confetti from 'canvas-confetti';
+import { ElementRef, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-sudoku',
@@ -60,7 +62,8 @@ import puzzle from "./puzzles.json"
 })
 export class SudokuComponent implements OnInit {
 
-  constructor() { 
+  constructor(private renderer2: Renderer2,
+    private elementRef: ElementRef) { 
     this.cols = 9;
     this.rows = 9;
     this.grid =[];
@@ -69,16 +72,19 @@ export class SudokuComponent implements OnInit {
       this.count[i] = 0;
     for(let i=0;i<this.rows;i++){
       this.grid[i] = [];
+      this.solution[i] = [];
       this.colorState[i] = [];
       for(let j=0;j<this.cols;j++){
         this.grid[i][j]=this.currentPuzzle[i*9+j];
+        this.solution[i][j]=this.currentPuzzle[i*9+j];
         if(this.grid[i][j]!=0){
           this.map.push(i+""+j);
+          this.filledValues++;
         }
         this.count[this.currentPuzzle[i*9+j]]++;
       }
     }
-    console.log(this.map);
+    this.solveSudoku(this.solution)
   }
 
   cols: number;
@@ -93,6 +99,9 @@ export class SudokuComponent implements OnInit {
   activeButton: boolean[] = [];
   count: number[] = [];
   map: Object[] = [];
+  solution: number[][] = [];
+  filledValues: number = 0;
+  done: boolean = false;
   ngOnInit(): void {
     this.breakpoint = (window.innerWidth <= 450) ? 3 : 1;
     this.defaultColor();
@@ -140,26 +149,40 @@ export class SudokuComponent implements OnInit {
     }
     this.validate();
   }
-
+  
   fillValue(n: number){
     let tmp = this.xSelected+""+this.ySelected;
     if(this.xSelected>=0 && !this.map.includes(tmp)){
       this.count[this.grid[this.xSelected][this.ySelected]]--;
+      if(this.grid[this.xSelected][this.ySelected]==0)
+        this.filledValues++;
       this.grid[this.xSelected][this.ySelected] = n;
       this.count[n]++;
-      console.log(this.count)
       if(this.count[n]==9)
         this.activeButton[n-1]=true;
       this.defaultColor();
       this.colorState[this.xSelected][this.ySelected]="#1a237e"
       this.selectCell(this.xSelected,this.ySelected)
     }
+    if(this.filledValues==81 && this.result()){
+      console.log("Win");
+      this.done = true;
+    }
   }
 
   eraseValue(){
-    this.grid[this.xSelected][this.ySelected] = 0;
-    this.colorState[this.xSelected][this.ySelected] = "lightblue";
-    this.defaultColor();
+    let tmp = this.xSelected+""+this.ySelected;
+    if(this.xSelected>=0 && !this.map.includes(tmp)){
+      this.colorState[this.xSelected][this.ySelected] = "lightblue";
+      console.log(this.count);
+      this.count[this.grid[this.xSelected][this.ySelected]]--;
+      this.activeButton[this.grid[this.xSelected][this.ySelected]-1] = false;
+      this.grid[this.xSelected][this.ySelected] = 0;
+      this.filledValues--;
+      this.count[0]++;
+      console.log(this.count);
+      this.defaultColor();
+    }
   }
 
   validate(){
@@ -195,5 +218,123 @@ export class SudokuComponent implements OnInit {
     }
   }
   
+  isSafe(board: number[][], row:number, col:number, num:number)
+  {
+      
+      // Row has the unique (row-clash)
+      for(let d = 0; d < board.length; d++)
+      {
+          
+          // Check if the number we are trying to
+          // place is already present in
+          // that row, return false;
+          if (board[row][d] == num)
+          {
+              return false;
+          }
+      }
   
+      // Column has the unique numbers (column-clash)
+      for(let r = 0; r < board.length; r++)
+      {
+            
+          // Check if the number
+          // we are trying to
+          // place is already present in
+          // that column, return false;
+          if (board[r][col] == num)
+          {
+              return false;
+          }
+      }
+  
+      // Corresponding square has
+      // unique number (box-clash)
+      let sqrt = Math.floor(Math.sqrt(board.length));
+      let boxRowStart = row - row % sqrt;
+      let boxColStart = col - col % sqrt;
+  
+      for(let r = boxRowStart;
+              r < boxRowStart + sqrt; r++)
+      {
+          for(let d = boxColStart;
+                  d < boxColStart + sqrt; d++)
+          {
+              if (board[r][d] == num)
+              {
+                  return false;
+              }
+          }
+      }
+  
+      // If there is no clash, it's safe
+      return true;
+  }
+
+  solveSudoku(board:number[][])
+  {
+      let row = -1;
+      let col = -1;
+      let isEmpty = true;
+      let solution = board;
+      for(let i = 0; i < 9; i++)
+      {
+          for(let j = 0; j < 9; j++)
+          {
+              if (board[i][j] == 0)
+              {
+                  row = i;
+                  col = j;
+  
+                  // We still have some remaining
+                  // missing values in Sudoku
+                  isEmpty = false;
+                  break;
+              }
+          }
+          if (!isEmpty)
+          {
+              break;
+          }
+      }
+  
+      // No empty space left
+      if (isEmpty)
+      {
+          return true;
+      }
+  
+      // Else for each-row backtrack
+      for(let num = 1; num <= 9; num++)
+      {
+          if (this.isSafe(solution, row, col, num))
+          {
+              solution[row][col] = num;
+              if (this.solveSudoku(board))
+              {
+                  
+                  // print(board, n);
+                  
+                  return true;
+              }
+              else
+              {
+                  
+                  // Replace it
+                  solution[row][col] = 0;
+              }
+          }
+      }
+      return false;
+  }
+  
+  result(){
+    for(let i=0;i<9;i++)
+      for(let j=0;j<9;j++){
+        if(this.grid[i][j]!=this.solution[i][j]){
+          return false;
+        }
+      }
+    return true;
+  }
 }

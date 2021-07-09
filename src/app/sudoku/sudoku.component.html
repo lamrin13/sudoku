@@ -1,4 +1,8 @@
 <div class="container">
+  <div *ngIf="done" class="pyro">
+    <div class="before"></div>
+    <div class="after"></div>
+  </div>
   <div class="flexBox1">
     <mat-grid-list [cols]="cols" rowHeight="1:1" [gutterSize]="'2px'">
       <div *ngFor="let item of [].constructor(cols); let i = index">
@@ -24,9 +28,11 @@
           {{ button }}
         </button>
       </div>
-      <!-- <button class="icon button buttons" (click)="eraseValue()">
-        <mat-icon [inline]="true">delete</mat-icon>
-      </button> -->
+      <div class="buttons">
+        <button class="danger-button" (click)="eraseValue()">
+          <mat-icon color="warn">delete</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
 </div>
