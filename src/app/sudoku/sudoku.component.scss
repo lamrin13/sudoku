@@ -8,19 +8,15 @@
 }
 .flexBox1 {
   width: 80%;
-  // max-width: 600px;
-  // margin: 15px;
   margin: auto;
 }
 .flexBox2 {
   max-width:60px;
-  // margin: 15px;
   margin: auto;
 }
 .buttons{
     margin-top:5px;
     width: 50px;
-    // background-color: red;
 }
 
 #number{
@@ -28,7 +24,6 @@
 }
 
 .button {
-  // float: left;
   background-color: #5963f0;
   border: black;
   color: white;
@@ -69,9 +64,7 @@
 }
 .button-container{
   display: flex;
-  // flex-wrap: wrap;
   flex-direction: column;
-  // width: 45%;
 }
 @media screen and (max-width:612px) {
   .button {
@@ -124,10 +117,6 @@
   .button-container{
     display: flex;
     flex-direction: row;
-    // background-color: blue;
-    // flex-wrap: wrap;
-    // width: 100%;
-    
   }
   .flexBox1 {
     width: 90%;
@@ -136,29 +125,18 @@
   }
   .flexBox2 {
     max-width:90%;
-    // margin: 15px;
     margin: auto;
   }
 }
 
-
-
 .button-flex{
   width: 100%;
-  // margin: 10px;
 }
-canvas {
-  height: 100%; /* we need these for full-screen effect */
-  width: 100%;
-}
-
-//animation
 
 $particles: 50;
 $width: 500;
 $height: 500;
 
-// Create the explosion...
 $box-shadow: ();
 $box-shadow2: ();
 @for $i from 0 through $particles {
@@ -266,16 +244,4 @@ body {
     margin-top: 40%;
     margin-left: 30%;
   }
-  // 40%, 59.9% {  
-  //   margin-top: 20%;
-  //   margin-left: 70%
-  // }
-  // 60%, 79.9% {  
-  //   margin-top: 30%;
-  //   margin-left: 20%;
-  // }
-  // 80%, 99.9% {  
-  //   margin-top: 30%;
-  //   margin-left: 80%;
-  // }
 }

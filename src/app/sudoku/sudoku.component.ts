@@ -67,7 +67,7 @@ export class SudokuComponent implements OnInit {
     this.cols = 9;
     this.rows = 9;
     this.grid =[];
-    this.currentPuzzle = puzzle[0];
+    this.currentPuzzle = puzzle[Math.floor(Math.random()*1000)];
     for(let i=0;i<10;i++)
       this.count[i] = 0;
     for(let i=0;i<this.rows;i++){
