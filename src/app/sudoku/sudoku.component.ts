@@ -181,6 +181,7 @@ export class SudokuComponent implements OnInit {
       this.filledValues--;
       this.count[0]++;
       console.log(this.count);
+      this.done = false;
       this.defaultColor();
     }
   }
